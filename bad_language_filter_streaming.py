@@ -1,6 +1,6 @@
 import subprocess
 
-f = open("input.srt") 
+f = open("*.srt") 
 text = f.read() 
 f.close()
 json_data = {} 
@@ -34,7 +34,7 @@ def getText(sub):
 badids = []
 badlanguage = ["god", "dick", "penis", "cunt", "jesus", "christ", "shit", "lord", "fuck", "ass", "bitch"]
 result = "#!/usr/bin/env bash\n\n"
-result += "ffmpeg -i input.mp4 -af \"\n"
+result += "ffplay -i *.mp4 -af \"\n"
 numberofbadlanguage = 0
 for i in range(0, len(sublist)-1):
  #print(sublist[i]+"\n\n")
@@ -74,7 +74,7 @@ for i in range(0, len(sublist)-1):
 for start, end in badids:
   result += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
 
-result =  result[:-4] + "\" output.mp4"
+result =  result[:-4] + "\""
 #print(result)
 f = open("languagefilter2.sh", "w")
 f.write(result)
