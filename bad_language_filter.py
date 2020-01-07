@@ -31,6 +31,7 @@ def getText(sub):
   result = "hello"
   return result
 
+badids = []
 badlanguage = ["god", "dick", "penis", "cunt", "jesus", "christ", "shit", "lord", "fuck", "ass", "bitch"]
 result = "#!/usr/bin/env bash\n\n"
 result += "ffmpeg -i input.mp4 -af \"\n"
@@ -39,25 +40,42 @@ for i in range(0, len(sublist)-1):
  #print(sublist[i]+"\n\n")
  id = i
  split = sublist[i].split("\n")
- #print(split)
+ 
  time = split[1]
  timesplit  = time.split(" --> ")
  #print(timesplit)
- start = get_sec(timesplit[0]) 
- end = get_sec(timesplit[1])
- text = split[2]
- if any(s.lower() in text.lower() for s in badlanguage):
-    result += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
-    numberofbadlanguage+=1
-    #print("total: " + str(numberofbadlanguage))
+ start = get_sec(timesplit[0])-2 
+ end = get_sec(timesplit[1])+2
+ 
+ #print(word_list)
+ #print(word)
+ #print(split[2])
+ time = [start, end]
+ if any(word in split[2].lower() for word in badlanguage):
+         #result += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
+      numberofbadlanguage+=1
+         #print(str(id) + split[2].lower())
+      badids.append(time)
+ if len(split)>3:
+   if any(word in split[3].lower() for word in badlanguage):
+     
+      badids.append(time)
+      numberofbadlanguage+=1
+
  json_data[id] = {}
  json_data[id]["start"] = int(start)
  json_data[id]["end"] = int(end)
  json_data[id]["text"] = text
-
+ text = ""
 #print(json_data) 
 
+#print(badids)
+#print("total:" + str(numberofbadlanguage))
+for start, end in badids:
+  result += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
+
 result =  result[:-4] + "\" output.mp4"
+#print(result)
 f = open("languagefilter2.sh", "w")
 f.write(result)
 f.close()
