@@ -56,7 +56,8 @@ for i in range(0, len(sublist)-1):
  #print(split[2])
  time = [start, end]
  text = split[2].lower()
- #print(text)
+ if len(split)>3:
+    text+= " " + split[3].lower()
  found = []
  for word in badlanguage:
   p = re.search(r"\b" + re.escape(word) + r"\b", text) 
@@ -65,15 +66,9 @@ for i in range(0, len(sublist)-1):
 
          #result += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
    #numberofbadlanguage+=1
-   #print(str(id) + split[2].lower())
+    print(str(id) + sublist[i])
    #badids.append(time)
- if len(split)>3:
-     text = split[3].lower()
-     for word in badlanguage:
-      p = re.search(r"\b" + re.escape(word) + r"\b", text) 
-     if p:
-       found.append(word)
-
+ 
  if len(found)!=0:
    print(found)
       #print(str(id) + split[3].lower())

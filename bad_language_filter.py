@@ -1,6 +1,8 @@
 import subprocess
+import re
 
-f = open("input.srt") 
+movietitle = input("title: " )
+f = open(movietitle+".srt") 
 text = f.read() 
 f.close()
 json_data = {} 
@@ -32,9 +34,9 @@ def getText(sub):
   return result
 
 badids = []
-badlanguage = ["god", "dick", "penis", "cunt", "jesus", "christ", "shit", "lord", "fuck", "ass", "bitch"]
+badlanguage = ("god", "dick", "damn", "hell", "bloody", "screw", "penis", "cunt", "jesus", "christ", "shit", "lord", "fuck", "ass", "bitch")
 result = "#!/usr/bin/env bash\n\n"
-result += "ffmpeg -i input.mp4 -af \"\n"
+result += "ffmpeg -i " + movietitle + ".mp4 -af \"\n"
 numberofbadlanguage = 0
 for i in range(0, len(sublist)-1):
  #print(sublist[i]+"\n\n")
@@ -51,16 +53,25 @@ for i in range(0, len(sublist)-1):
  #print(word)
  #print(split[2])
  time = [start, end]
- if any(word in split[2].lower() for word in badlanguage):
-         #result += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
-      numberofbadlanguage+=1
-         #print(str(id) + split[2].lower())
-      badids.append(time)
+ text = split[2].lower()
  if len(split)>3:
-   if any(word in split[3].lower() for word in badlanguage):
-     
-      badids.append(time)
-      numberofbadlanguage+=1
+    text+= " " + split[3].lower()
+ found = []
+ for word in badlanguage:
+  p = re.search(r"\b" + re.escape(word) + r"\b", text) 
+  if p:
+    found.append(word)
+
+         #result += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
+   #numberofbadlanguage+=1
+    print(str(id) + sublist[i])
+   #badids.append(time)
+ 
+ if len(found)!=0:
+   print(found)
+      #print(str(id) + split[3].lower())
+   badids.append(time)
+      #numberofbadlanguage+=1
 
  json_data[id] = {}
  json_data[id]["start"] = int(start)
