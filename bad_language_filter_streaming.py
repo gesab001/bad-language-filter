@@ -1,11 +1,12 @@
 import subprocess
+import re
 
-f = open("*.srt") 
+f = open("passengers.srt") 
 text = f.read() 
 f.close()
 json_data = {} 
 sublist = text.split("\n\n") 
-
+#print(sublist)
 def get_sec(time_str):
     """Get Seconds from time."""
     h, m, s = time_str.split(':')
@@ -31,8 +32,11 @@ def getText(sub):
   result = "hello"
   return result
 
+def findWholeWord(w):
+    return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
+
 badids = []
-badlanguage = ["god", "dick", "penis", "cunt", "jesus", "christ", "shit", "lord", "fuck", "ass", "bitch"]
+badlanguage = ("god", "dick", "damn", "hell", "bloody", "screw", "penis", "cunt", "jesus", "christ", "shit", "lord", "fuck", "ass", "bitch")
 result = "#!/usr/bin/env bash\n\n"
 result += "ffplay -i *.mp4 -af \"\n"
 numberofbadlanguage = 0
@@ -51,16 +55,30 @@ for i in range(0, len(sublist)-1):
  #print(word)
  #print(split[2])
  time = [start, end]
- if any(word in split[2].lower() for word in badlanguage):
+ text = split[2].lower()
+ #print(text)
+ found = []
+ for word in badlanguage:
+  p = re.search(r"\b" + re.escape(word) + r"\b", text) 
+  if p:
+    found.append(word)
+
          #result += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
-      numberofbadlanguage+=1
-         #print(str(id) + split[2].lower())
-      badids.append(time)
+   #numberofbadlanguage+=1
+   #print(str(id) + split[2].lower())
+   #badids.append(time)
  if len(split)>3:
-   if any(word in split[3].lower() for word in badlanguage):
-     
-      badids.append(time)
-      numberofbadlanguage+=1
+     text = split[3].lower()
+     for word in badlanguage:
+      p = re.search(r"\b" + re.escape(word) + r"\b", text) 
+     if p:
+       found.append(word)
+
+ if len(found)!=0:
+   print(found)
+      #print(str(id) + split[3].lower())
+   badids.append(time)
+      #numberofbadlanguage+=1
 
  json_data[id] = {}
  json_data[id]["start"] = int(start)
