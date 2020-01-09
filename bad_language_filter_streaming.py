@@ -1,7 +1,9 @@
 import subprocess
 import re
+import json
 
-f = open("passengers.srt") 
+movietitle = input("title: ")
+f = open(movietitle+".srt") 
 text = f.read() 
 f.close()
 json_data = {} 
@@ -35,10 +37,18 @@ def getText(sub):
 def findWholeWord(w):
     return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
 
+
+def loadBadWords(): 
+ json_file = open("badwords.json")
+ data = json.load(json_file)
+ json_file.close()
+ return data["badwords"]
+
 badids = []
-badlanguage = ("god", "dick", "damn", "hell", "bloody", "screw", "penis", "cunt", "jesus", "christ", "shit", "lord", "fuck", "ass", "bitch")
+badlanguage = loadBadWords()
+
 result = "#!/usr/bin/env bash\n\n"
-result += "ffplay -i *.mp4 -af \"\n"
+result += "sudo ffplay -i "+movietitle+".mp4 -af \"\n"
 numberofbadlanguage = 0
 for i in range(0, len(sublist)-1):
  #print(sublist[i]+"\n\n")
