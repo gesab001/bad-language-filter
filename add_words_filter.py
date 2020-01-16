@@ -11,8 +11,10 @@ while True:
      break
   else:
     data["badwords"].append(word)
+    data["badwords"].sort()
     print(data)
     outfile = open("badwords.json", "w")
+   
     json.dump(data, outfile)
     outfile.close()
 

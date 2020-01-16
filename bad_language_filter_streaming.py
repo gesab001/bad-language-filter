@@ -48,7 +48,7 @@ badids = []
 badlanguage = loadBadWords()
 
 result = "#!/usr/bin/env bash\n\n"
-result += "sudo ffplay -i "+movietitle+".mp4 -af \"\n"
+result += "sudo ffplay -vf subtitles="+movietitle+"-filtered.srt -i "+movietitle+".mp4 -af \"\n"
 numberofbadlanguage = 0
 for i in range(0, len(sublist)-1):
  #print(sublist[i]+"\n\n")
@@ -59,7 +59,7 @@ for i in range(0, len(sublist)-1):
  timesplit  = time.split(" --> ")
  #print(timesplit)
  start = get_sec(timesplit[0])-1 
- end = get_sec(timesplit[1])+1
+ end = get_sec(timesplit[1])+2
  
  #print(word_list)
  #print(word)
@@ -76,11 +76,11 @@ for i in range(0, len(sublist)-1):
 
          #result += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
    #numberofbadlanguage+=1
-    print(str(id) + sublist[i])
+    #print(str(id) + sublist[i])
    #badids.append(time)
  
  if len(found)!=0:
-   print(found)
+   #print(found)
       #print(str(id) + split[3].lower())
    badids.append(time)
       #numberofbadlanguage+=1
@@ -99,8 +99,21 @@ for start, end in badids:
 
 result =  result[:-4] + "\""
 #print(result)
-f = open("languagefilter2.sh", "w")
+f = open("languagefilter-streaming.sh", "w")
 f.write(result)
 f.close()
 
-subprocess.call("./languagefilter2.sh")
+for x in range(len(sublist)):
+ for word in badlanguage:
+
+   if word.lower() in sublist[x].lower().split():
+     #print(sublist[x])
+     clean_line = sublist[x].lower().replace(word.lower(), "***")
+     sublist[x] = clean_line
+
+f = open("mib-filtered.srt", "w")
+filtered_subtitles = "\n\n".join(sublist)
+f.write(filtered_subtitles)
+f.close()
+
+subprocess.call("./languagefilter-streaming.sh")
