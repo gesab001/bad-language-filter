@@ -109,7 +109,7 @@ for word in badlanguage:
      r = re.compile(r"\b"+re.escape(word)+ r"\b", re.IGNORECASE)
      subtitle_string = r.sub(r'***', subtitle_string)
 
-f = open("mib-filtered.srt", "w")
+f = open(movietitle+"-filtered.srt", "w")
 f.write(subtitle_string)
 f.close()
 
