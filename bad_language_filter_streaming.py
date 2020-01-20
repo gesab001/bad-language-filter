@@ -4,10 +4,10 @@ import json
 
 movietitle = input("title: ")
 f = open(movietitle+".srt") 
-text = f.read() 
+subtitle_string = f.read() 
 f.close()
 json_data = {} 
-sublist = text.split("\n\n") 
+sublist = subtitle_string.split("\n\n") 
 #print(sublist)
 def get_sec(time_str):
     """Get Seconds from time."""
@@ -47,8 +47,8 @@ def loadBadWords():
 badids = []
 badlanguage = loadBadWords()
 
-result = "#!/usr/bin/env bash\n\n"
-result += "sudo ffplay -vf subtitles="+movietitle+"-filtered.srt -i "+movietitle+".mp4 -af \"\n"
+#result = "#!/usr/bin/env bash\n\n"
+command = "ffplay -vf subtitles="+movietitle+"-filtered.srt -i "+movietitle+".mp4 -af \"\n"
 numberofbadlanguage = 0
 for i in range(0, len(sublist)-1):
  #print(sublist[i]+"\n\n")
@@ -95,25 +95,22 @@ for i in range(0, len(sublist)-1):
 #print(badids)
 #print("total:" + str(numberofbadlanguage))
 for start, end in badids:
-  result += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
+  command += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
 
-result =  result[:-4] + "\""
+command =  command[:-4] + "\""
 #print(result)
 f = open("languagefilter-streaming.sh", "w")
-f.write(result)
+f.write(command)
 f.close()
 
-for x in range(len(sublist)):
- for word in badlanguage:
 
-   if word.lower() in sublist[x].lower().split():
-     #print(sublist[x])
-     clean_line = sublist[x].lower().replace(word.lower(), "***")
-     sublist[x] = clean_line
+for word in badlanguage:
+ if re.search(word, subtitle_string, re.IGNORECASE):
+     r = re.compile(r"\b"+re.escape(word)+ r"\b", re.IGNORECASE)
+     subtitle_string = r.sub(r'***', subtitle_string)
 
 f = open("mib-filtered.srt", "w")
-filtered_subtitles = "\n\n".join(sublist)
-f.write(filtered_subtitles)
+f.write(subtitle_string)
 f.close()
 
-subprocess.call("./languagefilter-streaming.sh")
+subprocess.call(command, shell=True)
