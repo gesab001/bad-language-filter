@@ -65,7 +65,7 @@ badids = []
 badlanguage = loadBadWords()
 
 #result = "#!/usr/bin/env bash\n\n"
-command = "ffplay -vf subtitles="+movietitle+"-filtered.srt -i "+movietitle+".mp4 -af \"\n"
+command = "ffplay -vf subtitles="+movietitle+"-filtered.srt -i "+movietitle+".mp4 -af \""
 numberofbadlanguage = 0
 for i in range(0, len(sublist)-1):
  #print(sublist[i]+"\n\n")
@@ -113,9 +113,9 @@ for i in range(0, len(sublist)-1):
 #print(badids)
 #print("total:" + str(numberofbadlanguage))
 for start, end in badids:
-  command += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
+  command += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, "
 
-command =  command[:-4] + "\""
+command =  command[:-2] + "\""
 #print(result)
 f = open("languagefilter-streaming.sh", "w")
 f.write(command)
