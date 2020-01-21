@@ -1,6 +1,7 @@
 import subprocess
 import re
 import json
+import string
 
 movietitle = input("title: ")
 f = open(movietitle+".srt") 
@@ -9,6 +10,22 @@ f.close()
 json_data = {} 
 sublist = subtitle_string.split("\n\n") 
 #print(sublist)
+
+
+def unmaskBadWord(word):
+   letters = list(string.ascii_lowercase)
+   wordList = list(word)
+   for x in range(0, len(wordList)):
+      letter = wordList[x]
+      #print("letter:" + letter)
+      letterindex = string.ascii_lowercase.index(letter.lower())
+      nextletterIndex = letterindex - 1
+      nextletter = letters[nextletterIndex]
+      wordList[x] = nextletter
+       
+   badword = "".join(wordList)
+   return badword
+
 def get_sec(time_str):
     """Get Seconds from time."""
     h, m, s = time_str.split(':')
@@ -39,7 +56,7 @@ def findWholeWord(w):
 
 
 def loadBadWords(): 
- json_file = open("badwords.json")
+ json_file = open("badwords2.json")
  data = json.load(json_file)
  json_file.close()
  return data["badwords"]
@@ -70,7 +87,8 @@ for i in range(0, len(sublist)-1):
     text+= " " + split[3].lower()
  found = []
  for word in badlanguage:
-  p = re.search(r"\b" + re.escape(word) + r"\b", text) 
+  unmasked = unmaskBadWord(word)
+  p = re.search(r"\b" + re.escape(unmasked) + r"\b", text) 
   if p:
     found.append(word)
 
@@ -105,8 +123,9 @@ f.close()
 
 
 for word in badlanguage:
- if re.search(word, subtitle_string, re.IGNORECASE):
-     r = re.compile(r"\b"+re.escape(word)+ r"\b", re.IGNORECASE)
+ unmasked = unmaskBadWord(word)
+ if re.search(unmasked, subtitle_string, re.IGNORECASE):
+     r = re.compile(r"\b"+re.escape(unmasked)+ r"\b", re.IGNORECASE)
      subtitle_string = r.sub(r'***', subtitle_string)
 
 f = open(movietitle+"-filtered.srt", "w")
