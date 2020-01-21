@@ -1,7 +1,7 @@
 # bad-language-filter
 This will mute the coarse language in movies. 
 
-Tested in Windows 10 and Linux.
+Tested in Windows 10 and Linux and MacOS.
 
 Requirements:
 - Install FFMPEG
