@@ -1,7 +1,7 @@
 import subprocess
 import re
 import json
-
+import string
 
 movietitle = input("title: ")
 f = open(movietitle+".srt") 
@@ -56,7 +56,7 @@ def findWholeWord(w):
 
 
 def loadBadWords(): 
- json_file = open("badwords.json")
+ json_file = open("badwords2.json")
  data = json.load(json_file)
  json_file.close()
  return data["badwords"]
@@ -113,11 +113,11 @@ for i in range(0, len(sublist)-1):
 #print(badids)
 #print("total:" + str(numberofbadlanguage))
 for start, end in badids:
-  ommand += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, "
+  command += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, "
 
 
 filtered_movie_title = movietitle + "-filtered.mp4"
-command =  command[:-4] + "\" " + filtered_movie_title
+command =  command[:-2] + "\" " + filtered_movie_title
 #print(command)
 
 
