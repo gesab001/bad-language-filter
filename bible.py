@@ -1,5 +1,6 @@
 import datetime
 import json
+import subprocess
 
 length = 180
 id = "1"
@@ -49,4 +50,7 @@ for i in range(1, length, 1):
 outfile = open("bible-subtitles.srt", "w")
 outfile.write(subtitles)
 outfile.close()
-   
+
+title = input("title: " )
+command = "ffplay -vf subtitles=bible-subtitles.srt:force_style='Alignment=6' -i " + title + ".mp4"
+subprocess.call(command, shell=True)

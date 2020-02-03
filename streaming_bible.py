@@ -65,7 +65,7 @@ badids = []
 badlanguage = loadBadWords()
 
 #result = "#!/usr/bin/env bash\n\n"
-command = "ffplay -vf subtitles="+movietitle+"-filtered.srt -i "+movietitle+".mp4 -af \""
+command = "ffplay -vf subtitles=bible-subtitles.srt -i "+movietitle+".mp4 -af \""
 numberofbadlanguage = 0
 for i in range(0, len(sublist)-1):
  #print(sublist[i]+"\n\n")
