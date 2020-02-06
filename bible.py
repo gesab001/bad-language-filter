@@ -11,6 +11,9 @@ words = "Is that you on the beach?"
 toString = id + "\n" + start + "\n" + to + "\n" + end + "\n" + words + "\n\n"
 
 totalVerses = 31102
+file = open("bible.json", "r")
+json_data = json.load(file)
+
 def getCurrentID():
    first_time = datetime.datetime(2018,6,23)
    later_time = datetime.datetime.now()    
@@ -22,11 +25,17 @@ def getCurrentID():
       currentID = currentID - totalVerses
    return int(currentID)
 
-
+def getBooks():
+  verses = json_data["bible"]
+  books = []
+  for verse in verses:
+   book = verse["book"]
+   if book not in books:
+      books.append(book)
+  return books
+  
 def getBibleTopic(topic):
-  verses = []
-  file = open("bible.json", "r")
-  json_data = json.load(file)
+  verses = []  
   if topic=="all":
     verses = json_data["bible"]
   else:
@@ -37,9 +46,31 @@ def getBibleTopic(topic):
            verses.append(item)
            print(verse)		   
   return verses
+ 
+ 
+def getBookVerses(bookTitle):
+    verses = []
+    bible = json_data["bible"]
+    for item in bible:
+        verse = item["book"]
+        if bookTitle.lower() in verse.lower():
+           verses.append(item)
+           print(verse)		   
+    return verses
+bible = []
+choice = input("topic or book: ")
 
-topic = input("topic: " ) 
-bible = getBibleTopic(topic)  
+if choice=="book":
+ books = getBooks()
+ topic = input("book name: " )
+ for book in books:
+  if topic.lower() in book.lower():
+   bookName = book
+   bible = getBookVerses(bookName)
+else:  
+ topic = input("topic: " )
+ bible = getBibleTopic(topic)  
+
 totalVerses = len(bible)
   
 def getVerse(id):
@@ -58,7 +89,7 @@ for i in range(1, length, 1):
 	start = getMinute(i-1)
 	end = getMinute(i)
 	verse = getVerse(currentID)	
-	words = verse["word"]
+	words = verse["word"] + " " + verse["book"] + " " + str(verse["chapter"]) + ":" + str(verse["verse"])
 	toString = id + "\n" + start + " " + to + " " + end + "\n" + words + "\n\n"
 	print(toString)
 	currentID = currentID + 1
@@ -74,7 +105,7 @@ assfile = "bible-subtitles.ass"
 convertoass =  "ffmpeg -i bible-subtitles.srt " + assfile
 subprocess.call(convertoass, shell=True)
 
-moviefilename = title + ".mp4"
-style = ":force_style='Alignment=6,ScaleX=1%,ScaleY=1%,MarginL=5,MarginR=5'"
+moviefilename = title
+style = ":force_style='Alignment=6'"
 command = "ffplay -vf subtitles="+assfile + style+" -i " + moviefilename;
 subprocess.call(command, shell=True)
