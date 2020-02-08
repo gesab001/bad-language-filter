@@ -11,7 +11,7 @@ words = "Is that you on the beach?"
 toString = id + "\n" + start + "\n" + to + "\n" + end + "\n" + words + "\n\n"
 
 totalVerses = 31102
-file = open("bible.json", "r")
+file = open("F:\\movies\\bible.json", "r")
 json_data = json.load(file)
 
 def getCurrentID():
@@ -64,7 +64,7 @@ if choice=="book":
  books = getBooks()
  topic = input("book name: " )
  for book in books:
-  if topic.lower() in book.lower():
+  if topic.lower() == book.lower():
    bookName = book
    bible = getBookVerses(bookName)
 else:  
@@ -106,6 +106,9 @@ convertoass =  "ffmpeg -i bible-subtitles.srt " + assfile
 subprocess.call(convertoass, shell=True)
 
 moviefilename = title
-style = ":force_style='Alignment=6'"
-command = "ffplay -vf subtitles="+assfile + style+" -i " + moviefilename;
+fontSize = input("font size: ")
+position = input("position(6=top,2=bottom)")
+repeat = input("repeat (0=forever): ")
+style = ":force_style='Alignment="+position+",Fontsize="+fontSize+"'"
+command = "ffplay -loop "+ repeat +" -vf subtitles="+assfile + style+" -i " + moviefilename;
 subprocess.call(command, shell=True)
