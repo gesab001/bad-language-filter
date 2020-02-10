@@ -4,6 +4,7 @@ import json
 import string
 import datetime
 
+windows_mainfolder = "C:\\Users\\14400\\PythonProjects\\bad-language-filter\\"
 movietitle = input("title: ")
 f = open(movietitle+".srt") 
 movie_subtitle_file = movietitle + "-filtered.srt"
@@ -60,7 +61,7 @@ def findWholeWord(w):
 
 
 def loadBadWords(): 
- json_file = open("badwords2.json")
+ json_file = open(windows_mainfolder+"badwords2.json")
  data = json.load(json_file)
  json_file.close()
  return data["badwords"]
@@ -162,7 +163,7 @@ words = "Is that you on the beach?"
 toString = id + "\n" + start + "\n" + to + "\n" + end + "\n" + words + "\n\n"
 
 totalVerses = 31102
-file = open("F:\\movies\\bible.json", "r")
+file = open(windows_mainfolder+"bible.json", "r")
 json_data = json.load(file)
 
 def getCurrentID():
