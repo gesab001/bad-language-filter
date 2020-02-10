@@ -128,7 +128,7 @@ for word in badlanguage:
      r = re.compile(r"\b"+re.escape(unmasked)+ r"\b", re.IGNORECASE)
      subtitle_string = r.sub(r'***', subtitle_string)
 
-subprocess.call(["python", "bible.py"])	
+#subprocess.call(["python", "bible.py"])	
 f = open(movietitle+"-filtered.srt", "w")
 f.write(subtitle_string)
 f.close()
