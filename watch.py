@@ -6,7 +6,10 @@ import datetime
 
 windows_mainfolder = "C:\\Users\\14400\\PythonProjects\\bad-language-filter\\"
 movietitle = input("title: ")
-f = open(movietitle+".srt") 
+try:
+  f = open(movietitle+".srt", encoding="utf8")
+except:
+  subprocess.call("bible", shell=True)  
 movie_subtitle_file = movietitle + "-filtered.srt"
 movie_assfile = movietitle + "-filtered.ass"
 
@@ -146,7 +149,7 @@ for word in badlanguage:
      subtitle_string = r.sub(r'***', subtitle_string)
 
 #subprocess.call("bible", shell=True)	
-f = open(movie_subtitle_file, "w")
+f = open(movie_subtitle_file, "w", encoding="utf8")
 f.write(subtitle_string)
 print(subtitle_string)
 f.close()
