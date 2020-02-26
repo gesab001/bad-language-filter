@@ -28,14 +28,22 @@
   ('watch',
    'C:\\Users\\14400\\PythonProjects\\bad-language-filter\\watch.py',
    'PYSOURCE'),
-  ('VCRUNTIME140.dll',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_64\\VCRUNTIME140.dll',
-   'BINARY'),
   ('python36.dll',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_64\\python36.dll',
    'BINARY'),
+  ('VCRUNTIME140.dll',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\VCRUNTIME140.dll',
+   'BINARY'),
+  ('_bz2',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\_bz2.pyd',
+   'EXTENSION'),
+  ('unicodedata',
+   'c:\\program files (x86)\\microsoft visual '
+   'studio\\shared\\python36_64\\DLLs\\unicodedata.pyd',
+   'EXTENSION'),
   ('_socket',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_64\\DLLs\\_socket.pyd',
@@ -43,10 +51,6 @@
   ('_lzma',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_64\\DLLs\\_lzma.pyd',
-   'EXTENSION'),
-  ('_bz2',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_64\\DLLs\\_bz2.pyd',
    'EXTENSION'),
   ('select',
    'c:\\program files (x86)\\microsoft visual '
@@ -63,10 +67,6 @@
   ('pyexpat',
    'c:\\program files (x86)\\microsoft visual '
    'studio\\shared\\python36_64\\DLLs\\pyexpat.pyd',
-   'EXTENSION'),
-  ('unicodedata',
-   'c:\\program files (x86)\\microsoft visual '
-   'studio\\shared\\python36_64\\DLLs\\unicodedata.pyd',
    'EXTENSION'),
   ('base_library.zip',
    'C:\\Users\\14400\\PythonProjects\\bad-language-filter\\build\\watch\\base_library.zip',

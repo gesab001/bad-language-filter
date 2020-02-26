@@ -9,7 +9,7 @@ movietitle = input("title: ")
 try:
   f = open(movietitle+".srt", encoding="utf8")
 except:
-  subprocess.call("bible", shell=True)  
+  subprocess.call("ffplay " + movietitle+".mp4", shell=True)  
 movie_subtitle_file = movietitle + "-filtered.srt"
 movie_assfile = movietitle + "-filtered.ass"
 
