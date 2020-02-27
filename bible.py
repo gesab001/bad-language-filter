@@ -11,7 +11,7 @@ words = "Is that you on the beach?"
 toString = id + "\n" + start + "\n" + to + "\n" + end + "\n" + words + "\n\n"
 
 totalVerses = 31102
-file = open("F:\\movies\\bible.json", "r")
+file = open("bible.json", "r")
 json_data = json.load(file)
 
 def getCurrentID():
