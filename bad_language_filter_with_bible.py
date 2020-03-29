@@ -11,13 +11,7 @@ f.close()
 
 movie_subtitle_file = movietitle + "-filtered.srt"
 movie_assfile = movietitle + "-filtered.ass"
-f = open(movie_subtitle_file, "w", encoding="utf8")
-f.write(subtitle_string)
-print(subtitle_string)
-f.close()
-convert_movie_assfile =  "ffmpeg -i " + movie_subtitle_file + " "  + movie_assfile
-print("convert_movie_assfile: " + convert_movie_assfile)
-subprocess.call(convert_movie_assfile, shell=True)
+
 
 json_data = {} 
 sublist = subtitle_string.split("\n\n") 
@@ -149,9 +143,14 @@ for word in badlanguage:
      r = re.compile(r"\b"+re.escape(unmasked)+ r"\b", re.IGNORECASE)
      subtitle_string = r.sub(r'***', subtitle_string)
 
-f = open(movietitle+"-filtered.srt", "w")
+#subprocess.call("bible", shell=True)	
+f = open(movie_subtitle_file, "w", encoding="utf8")
 f.write(subtitle_string)
+print(subtitle_string)
 f.close()
+convert_movie_assfile =  "ffmpeg -i " + movie_subtitle_file + " "  + movie_assfile
+print("convert_movie_assfile: " + convert_movie_assfile)
+subprocess.call(convert_movie_assfile, shell=True)
 
 
 length = 240
