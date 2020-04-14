@@ -106,12 +106,17 @@ for i in range(0, len(sublist)-1):
  if len(split)>3:
     text+= " " + split[3].lower()
  found = []
+ #print(text)
  for word in badlanguage:
   unmasked = unmaskBadWord(word)
   p = re.search(r"\b" + re.escape(unmasked) + r"\b", text) 
+
+  x = re.findall(r'\b'+unmasked+'\w+', text)
   if p:
     found.append(word)
-
+  if x:
+    found.append(word)
+    #print(text)
          #result += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
    #numberofbadlanguage+=1
     #print(str(id) + sublist[i])
@@ -147,14 +152,16 @@ for word in badlanguage:
  if re.search(unmasked, subtitle_string, re.IGNORECASE):
      r = re.compile(r"\b"+re.escape(unmasked)+ r"\b", re.IGNORECASE)
      subtitle_string = r.sub(r'***', subtitle_string)
+     r = re.compile(r'\b'+unmasked+'\w+', re.IGNORECASE)
+     subtitle_string = r.sub(r'***', subtitle_string)
 
 #subprocess.call("bible", shell=True)	
 f = open(movie_subtitle_file, "w", encoding="utf8")
 f.write(subtitle_string)
-print(subtitle_string)
+#print(subtitle_string)
 f.close()
 convert_movie_assfile =  "ffmpeg -i " + movie_subtitle_file + " "  + movie_assfile
-print("convert_movie_assfile: " + convert_movie_assfile)
+#print("convert_movie_assfile: " + convert_movie_assfile)
 subprocess.call(convert_movie_assfile, shell=True)
 
 length = 240
@@ -246,7 +253,7 @@ for i in range(1, length, 1):
 	verse = getVerse(currentID)	
 	words = verse["word"] + " " + verse["book"] + " " + str(verse["chapter"]) + ":" + str(verse["verse"])
 	toString = id + "\n" + start + " " + to + " " + end + "\n" + words + "\n\n"
-	print(toString)
+	#print(toString)
 	currentID = currentID + 1
 	if currentID>totalVerses:
 	  currentID = 1

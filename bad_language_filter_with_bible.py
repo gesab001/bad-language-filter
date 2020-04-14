@@ -107,8 +107,11 @@ for i in range(0, len(sublist)-1):
   p = re.search(r"\b" + re.escape(unmasked) + r"\b", text) 
   if p:
     found.append(word)
-
-         #command += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
+  x = re.findall(r'\b'+unmasked+'\w+', text)
+  if x:
+    found.append(word)
+  
+          #command += "volume=enable='between(t," + str(start) + "," + str(end) + ")':volume=0, " + "\\\n"
    #numberofbadlanguage+=1
     #print(str(id) + sublist[i])
    #badids.append(time)
@@ -140,8 +143,10 @@ command =  command[:-2] + "\" " + filtered_movie_title
 for word in badlanguage:
  unmasked = unmaskBadWord(word)
  if re.search(unmasked, subtitle_string, re.IGNORECASE):
-     r = re.compile(r"\b"+re.escape(unmasked)+ r"\b", re.IGNORECASE)
+     r = re.compile(r"\b"+re.escape(unmasked)+ r"\b", re.IGNORECASE) #searches for any word that matches this word
      subtitle_string = r.sub(r'***', subtitle_string)
+     r = re.compile(r'\b'+unmasked+'\w+', re.IGNORECASE) #searches for any string that starts with this word
+     subtitle_string = r.sub(r'***', subtitle_string) 
 
 #subprocess.call("bible", shell=True)	
 f = open(movie_subtitle_file, "w", encoding="utf8")
@@ -256,3 +261,6 @@ convertoass =  "ffmpeg -i bible-subtitles.srt " + assfile
 subprocess.call(convertoass, shell=True)
 
 subprocess.call(command, shell=True)
+shutdown = "shutdown -h now"
+
+subprocess.call(shutdown, shell=True)
