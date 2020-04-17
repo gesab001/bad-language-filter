@@ -4,17 +4,6 @@ import json
 import string
 import datetime
 
-movietitle = input("title: ")
-f = open(movietitle+".srt") 
-subtitle_string = f.read() 
-f.close()
-
-movie_subtitle_file = movietitle + "-filtered.srt"
-movie_assfile = movietitle + "-filtered.ass"
-
-
-json_data = {} 
-sublist = subtitle_string.split("\n\n") 
 #print(sublist)
 
 
@@ -66,6 +55,77 @@ def loadBadWords():
  data = json.load(json_file)
  json_file.close()
  return data["badwords"]
+
+
+def getCurrentID():
+    first_time = datetime.datetime(2018, 6, 23)
+    later_time = datetime.datetime.now()
+    duration = later_time - first_time
+    duration_in_s = duration.total_seconds()
+    minutes = divmod(duration_in_s, 60)[0]
+    currentID = minutes
+    while currentID > totalVerses:
+        currentID = currentID - totalVerses
+    return int(currentID)
+
+
+def getBooks():
+    verses = json_data["bible"]
+    books = []
+    for verse in verses:
+        book = verse["book"]
+        if book not in books:
+            books.append(book)
+    return books
+
+
+def getBibleTopic(topic):
+    verses = []
+    if topic == "all":
+        verses = json_data["bible"]
+    else:
+        bible = json_data["bible"]
+        for item in bible:
+            verse = item["word"]
+            if topic.lower() in verse.lower():
+                verses.append(item)
+                print(verse)
+    return verses
+
+
+def getBookVerses(bookTitle):
+    verses = []
+    bible = json_data["bible"]
+    for item in bible:
+        verse = item["book"]
+        if bookTitle.lower() in verse.lower():
+            verses.append(item)
+            print(verse)
+    return verses
+
+
+def getVerse(id):
+    verse = bible[id - 1]
+    return verse
+
+
+def getMinute(minutes):
+    result = '{:02d}:{:02d}:00,000'.format(*divmod(minutes, 60))
+    return result
+
+
+
+movietitle = input("title: ")
+f = open(movietitle+".srt")
+subtitle_string = f.read()
+f.close()
+
+movie_subtitle_file = movietitle + "-filtered.srt"
+movie_assfile = movietitle + "-filtered.ass"
+
+
+json_data = {}
+sublist = subtitle_string.split("\n\n")
 
 badids = []
 badlanguage = loadBadWords()
@@ -170,49 +230,6 @@ totalVerses = 31102
 file = open("bible.json", "r")
 json_data = json.load(file)
 
-def getCurrentID():
-   first_time = datetime.datetime(2018,6,23)
-   later_time = datetime.datetime.now()    
-   duration = later_time - first_time
-   duration_in_s = duration.total_seconds() 
-   minutes = divmod(duration_in_s, 60)[0]  
-   currentID = minutes
-   while currentID>totalVerses:
-      currentID = currentID - totalVerses
-   return int(currentID)
-
-def getBooks():
-  verses = json_data["bible"]
-  books = []
-  for verse in verses:
-   book = verse["book"]
-   if book not in books:
-      books.append(book)
-  return books
-  
-def getBibleTopic(topic):
-  verses = []  
-  if topic=="all":
-    verses = json_data["bible"]
-  else:
-    bible = json_data["bible"]
-    for item in bible:
-        verse = item["word"]
-        if topic.lower() in verse.lower():
-           verses.append(item)
-           print(verse)		   
-  return verses
- 
- 
-def getBookVerses(bookTitle):
-    verses = []
-    bible = json_data["bible"]
-    for item in bible:
-        verse = item["book"]
-        if bookTitle.lower() in verse.lower():
-           verses.append(item)
-           print(verse)		   
-    return verses
 bible = []
 choice = input("topic or book: ")
 
@@ -228,16 +245,7 @@ else:
  bible = getBibleTopic(topic)  
 
 totalVerses = len(bible)
-  
-def getVerse(id):
 
-	verse = bible[id-1]
-	return verse
-   
-def getMinute(minutes):
-   result = '{:02d}:{:02d}:00,000'.format(*divmod(minutes, 60 ))
-   return result
- 
 currentID =  getCurrentID() 
 subtitles = ""
 for i in range(1, length, 1):
