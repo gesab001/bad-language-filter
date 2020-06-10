@@ -76,6 +76,7 @@ badlanguage = loadBadWords()
 #fontSize = input("font size: ")
 position_bible = input("bible verse position(6=top,2=bottom)")
 repeat = input("repeat (0=forever): ")
+adjust_time = int(input("adjust time: "))
 position_movie = "6"
 if position_bible=="6":
   position_movie = "2"
@@ -95,7 +96,7 @@ for i in range(0, len(sublist)-1):
  time = split[1]
  timesplit  = time.split(" --> ")
  #print(timesplit)
- start = get_sec(timesplit[0])-1 
+ start = get_sec(timesplit[0])-1
  end = get_sec(timesplit[1])+2
  
  #print(word_list)
