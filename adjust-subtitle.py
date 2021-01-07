@@ -122,5 +122,9 @@ for i in range(0, len(sublist)-1):
  result += "\n\n" 
  text = ""
 
-with open("rambo-adjusted.srt", "w") as outfile:
+srtfilename = movietitle + "-adjusted.srt"
+print(srtfilename)
+
+with open(srtfilename, "w") as outfile:
    outfile.write(result)
+   print("output success")
